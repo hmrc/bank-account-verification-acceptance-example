@@ -13,12 +13,13 @@ The benefits of this are as follows:
 ## Running the tests
 
 Prior to executing the tests ensure you have:
- - Docker - if you want to run a browser (Chrome or Firefox) inside a container 
+ - Docker - To run MongoDB, or if you want to run a browser (Chrome or Firefox) inside a container 
  - Appropriate [drivers installed](#installing-local-driver-binaries) - to run tests against locally installed Browser
  - Installed/configured [service manager](https://github.com/hmrc/service-manager).  
 
 Run the following command to start services locally:
 
+    docker run --rm -d --name mongodb -p 27017-27019:27017-27019 mongo:4
     sm --start BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE -r --appendArgs '{                                                                                                              
       "BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE": [
         "-J-Dauditing.enabled=true",
