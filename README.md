@@ -28,11 +28,11 @@ Run the following command to start services locally:
     }
     '
 
-Then execute the `run_tests.sh` script:
+Then execute the `run-tests.sh` script:
     
-    ./run_tests.sh <browser-driver>
+    ./run-tests.sh <browser-driver>
 
-The `run_tests.sh` script defaults to the locally installed `chrome` driver binary.  For a complete list of supported param values, see:
+The `run-tests.sh` script defaults to the locally installed `chrome` driver binary.  For a complete list of supported param values, see:
  - `src/test/resources/application.conf` for **environment** 
  - [webdriver-factory](https://github.com/hmrc/webdriver-factory#2-instantiating-a-browser-with-default-options) for **browser-driver**
 
@@ -47,7 +47,7 @@ To run against a containerised Chrome browser:
 
 ```bash
 ./run-browser-with-docker.sh remote-chrome 
-./run_tests.sh local remote-chrome
+./run-tests.sh local remote-chrome
 ```
 
 `./run-browser-with-docker.sh` is **NOT** required when running in a CI environment. 
