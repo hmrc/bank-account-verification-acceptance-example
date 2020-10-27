@@ -26,8 +26,9 @@ Run the following command to start services locally:
         "-J-Dmicroservice.services.bank-account-verification-api.port=6001",
         "-J-Dmicroservice.services.bank-account-verification-web.port=6001"
       ]
-    }
-    '
+    }'
+
+_**Important Note:** We are using port 6001 for the mock server.  For the browser to be able to use the mock server for redirects on jenkins build jobs we need to use a port in the range 6001 - 6010._
 
 Then execute the `run-tests.sh` script:
     
