@@ -1,12 +1,12 @@
-#!/bin/bash
-ENV=${1:-local}
-BROWSER=${2:-chrome}
-DRIVER=
+#!/usr/bin/env bash
 
-if [ "$BROWSER" = "chrome" ]; then
-    DRIVER="-Dwebdriver.chrome.driver=/usr/local/bin/chromedriver"
-elif [ "$BROWSER" = "firefox" ]; then
-    DRIVER="-Dwebdriver.gecko.driver=/usr/local/bin/geckodriver"
+DEFAULT_BROWSER=chrome
+BROWSER_TYPE=$1
+ENV=$2
+
+if [ -z "$BROWSER_TYPE" ]; then
+    echo "BROWSER_TYPE value not set, defaulting to $DEFAULT_BROWSER..."
+    echo ""
 fi
 
-sbt -Dbrowser=$BROWSER -Denvironment=$ENV $DRIVER "testOnly uk.gov.hmrc.test.ui.specs.*"
+sbt -Dbrowser=${BROWSER_TYPE:=$DEFAULT_BROWSER} -Denv=${ENV:=local} "testOnly uk.gov.hmrc.test.ui.specs.*"

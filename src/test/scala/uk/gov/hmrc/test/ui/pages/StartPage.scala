@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.gov.hmrc.test.ui.driver
 
-import com.typesafe.scalalogging.LazyLogging
-import org.openqa.selenium.WebDriver
-import uk.gov.hmrc.webdriver.SingletonDriver
+package uk.gov.hmrc.test.ui.pages
 
-trait BrowserDriver extends LazyLogging {
-  logger.info(s"Instantiating Browser: ${sys.props.getOrElse("browser", "'browser' System property not set. This is required")}")
+import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
-  implicit lazy val driver: WebDriver = SingletonDriver.getInstance()
+case class StartPage() extends BasePage {
+  private lazy val startButton: IdQuery = id("start")
+  val url: String = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/start"
+
+  override def isOnPage: Boolean = {
+    webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
+  }
+
+  def clickStart(): Unit = {
+    click on startButton
+  }
 }
