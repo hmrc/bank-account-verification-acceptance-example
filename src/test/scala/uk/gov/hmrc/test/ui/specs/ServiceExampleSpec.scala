@@ -34,7 +34,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
   Scenario("Example Acceptance Test for services that use BAVFE") {
     val journeyID = UUID.randomUUID().toString
-    val continueUrl = s"http://localhost:9929/bank-account-verification-example-frontend/done/$journeyID"
+    val continueUrl = s"${DonePage().url}/$journeyID"
     val expectedBAVFEResponse =
       s"""{
          |    "accountType": "business",
@@ -101,7 +101,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     Then("The BAVFE journey is bypassed and I am returned to my service with an expected BAVFE response")
 
-    assertThat(webDriver.getCurrentUrl).isEqualTo(s"${DonePage().url}/$journeyID")
+    assertThat(webDriver.getCurrentUrl).isEqualTo(continueUrl)
     assertThat(DonePage().getAccountType).isEqualTo("business")
     assertThat(DonePage().getCompanyName).isEqualTo(DEFAULT_COMPANY_NAME)
     assertThat(DonePage().getSortCode).isEqualTo(DEFAULT_BANK_SORT_CODE)
