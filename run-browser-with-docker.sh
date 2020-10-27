@@ -18,7 +18,7 @@
 # Appends ZAP_PORT 11000 to ./run-zap-spec.sh
 #######################################
 port_mappings=$(sm -s | grep PASS | awk '{ print $12"->"$12 }' | paste -sd "," -)
-port_mappings="$port_mappings,11000->11000"
+port_mappings="$port_mappings,11000->11000, 9029->9029, 9000->9000"
 
 # Alternatively, port_mappings can be explicitly initialised as below:
 #port_mappings="9032->9032,9250->9250,9080->9080"
@@ -26,13 +26,22 @@ port_mappings="$port_mappings,11000->11000"
 #######################################
 # Defines the BROWSER variable from the argument passed to the script
 #######################################
-if [ -z "${1}" ]; then
-  echo "ERROR: Browser type not specified. Re-run the script with the option remote-chrome or remote-firefox."
-  exit 1
-elif [ "${1}" = "remote-chrome" ]; then
-  BROWSER="artefacts.tax.service.gov.uk/chrome-with-rinetd:83.0.4103.61-latest"
-elif [ "${1}" = "remote-firefox" ]; then
+
+DEFAULT_BROWSER=remote-chrome
+BROWSER_TYPE=$1
+
+if [ -z "$BROWSER_TYPE" ]; then
+    echo "BROWSER_TYPE value not set, defaulting to $DEFAULT_BROWSER..."
+    echo ""
+fi
+
+if [ "${BROWSER_TYPE}" = "remote-firefox" ]; then
   BROWSER="artefacts.tax.service.gov.uk/firefox-with-rinetd:76.0.1-latest"
+elif [ "${BROWSER_TYPE:=$DEFAULT_BROWSER}" = "remote-chrome" ]; then
+  BROWSER="artefacts.tax.service.gov.uk/chrome-with-rinetd:83.0.4103.61-latest"
+else
+  echo "${BROWSER_TYPE} is unknown, exiting..."
+  exit 1
 fi
 
 #######################################
