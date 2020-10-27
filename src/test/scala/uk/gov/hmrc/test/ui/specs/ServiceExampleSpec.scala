@@ -28,9 +28,6 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
   val DEFAULT_COMPANY_NAME = "P@cking & $orting"
   val DEFAULT_BANK_SORT_CODE = "40 47 84"
   val DEFAULT_BANK_ACCOUNT_NUMBER = "70872490"
-  val HMRC_SORT_CODE = "08 32 10"
-  val HMRC_BANK_ACCOUNT_NUMBER = "12001039"
-
 
   Scenario("Example Acceptance Test for services that use BAVFE") {
     val journeyID = UUID.randomUUID().toString
@@ -94,12 +91,14 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     )
 
     Given("I want to collect and validate a companies bank account details for my service")
+
     go to StartPage().url
 
     When("I invoke BAVFE by clicking on 'View an Example'")
+
     StartPage().clickStart()
 
-    Then("The BAVFE journey is bypassed and I am returned to my service with an expected BAVFE response")
+    Then("the BAVFE journey is bypassed and I am returned to my service with an expected BAVFE response")
 
     assertThat(webDriver.getCurrentUrl).isEqualTo(continueUrl)
     assertThat(DonePage().getAccountType).isEqualTo("business")
