@@ -13,7 +13,7 @@ The benefits of this are as follows:
 ## Running the tests
 
 Prior to executing the tests ensure you have:
- - Docker - if you want to a browser (Chrome or Firefox) inside a container 
+ - Docker - if you want to run a browser (Chrome or Firefox) inside a container 
  - Appropriate [drivers installed](#installing-local-driver-binaries) - to run tests against locally installed Browser
  - Installed/configured [service manager](https://github.com/hmrc/service-manager).  
 
