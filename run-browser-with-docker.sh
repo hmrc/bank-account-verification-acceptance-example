@@ -63,7 +63,7 @@ docker pull ${BROWSER} \
   && docker run \
   -d \
   --rm \
-  --name "${1}" \
+  --name "${BROWSER_TYPE:=$DEFAULT_BROWSER}" \
   -p 4444:4444 \
   -p 5900:5900 \
   -e PORT_MAPPINGS="$port_mappings" \
