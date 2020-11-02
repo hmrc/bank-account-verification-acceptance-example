@@ -58,7 +58,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     mockServer.when(
       HttpRequest.request()
         .withMethod("POST")
-        .withPath(s"/api/init")
+        .withPath("/api/init")
     ).respond(
       HttpResponse.response()
         .withHeader("Content-Type", "application/json")
@@ -70,10 +70,10 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     mockServer.when(
       HttpRequest.request()
         .withMethod("GET")
-        .withPath(s"/bank-account-verification/start/${initResponse.journeyId}")
+        .withPath(initResponse.startUrl)
     ).respond(
       HttpResponse.response()
-        .withHeader("Location", s"$continueUrl")
+        .withHeader("Location", continueUrl)
         .withStatusCode(303)
     )
 
@@ -81,7 +81,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     mockServer.when(
       HttpRequest.request()
         .withMethod("GET")
-        .withPath(s"/api/complete/${initResponse.journeyId}")
+        .withPath(initResponse.completeUrl)
     ).respond(
       HttpResponse.response()
         .withHeader("Content-Type", "application/json")
