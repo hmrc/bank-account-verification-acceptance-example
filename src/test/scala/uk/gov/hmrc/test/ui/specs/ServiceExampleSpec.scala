@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.test.ui.specs
 
-import java.util.UUID
-
 import org.assertj.core.api.Assertions.assertThat
 import org.mockserver.model.{HttpRequest, HttpResponse}
+import uk.gov.hmrc.test.ui.models.InitResponse
 import uk.gov.hmrc.test.ui.pages.{DonePage, StartPage}
 import uk.gov.hmrc.test.ui.utils.MockServer
 
@@ -30,8 +29,8 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
   val DEFAULT_BANK_ACCOUNT_NUMBER = "70872490"
 
   Scenario("Example Acceptance Test for services that use BAVFE") {
-    val journeyID = UUID.randomUUID().toString
-    val continueUrl = s"${DonePage().url}/$journeyID"
+    val initResponse: InitResponse = InitResponse()
+    val continueUrl = s"${DonePage().url}/${initResponse.journeyId}"
     val expectedBAVFEResponse =
       s"""{
          |    "accountType": "business",
@@ -64,14 +63,14 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
       HttpResponse.response()
         .withHeader("Content-Type", "application/json")
         .withStatusCode(200)
-        .withBody(s""""$journeyID"""")
+        .withBody(initResponse.asJsonString())
     )
 
     //Create a mock that will emulate the service passing over to BAVFE, and then handing back to the continue URL
     mockServer.when(
       HttpRequest.request()
         .withMethod("GET")
-        .withPath(s"/bank-account-verification/start/$journeyID")
+        .withPath(s"/bank-account-verification/start/${initResponse.journeyId}")
     ).respond(
       HttpResponse.response()
         .withHeader("Location", s"$continueUrl")
@@ -82,7 +81,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     mockServer.when(
       HttpRequest.request()
         .withMethod("GET")
-        .withPath(s"/api/complete/$journeyID")
+        .withPath(s"/api/complete/${initResponse.journeyId}")
     ).respond(
       HttpResponse.response()
         .withHeader("Content-Type", "application/json")
