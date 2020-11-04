@@ -95,7 +95,10 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     When("I invoke BAVFE by clicking on 'View an Example'")
 
-    StartPage().clickStart()
+    StartPage().enterPetName("Bugs")
+      .selectBunny()
+      .enterPetAge("4")
+      .clickContinue()
 
     Then("the BAVFE journey is bypassed and I am returned to my service with an expected BAVFE response")
 
