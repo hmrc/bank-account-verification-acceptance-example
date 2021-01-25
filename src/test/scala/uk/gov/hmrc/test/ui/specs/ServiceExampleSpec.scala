@@ -19,7 +19,7 @@ package uk.gov.hmrc.test.ui.specs
 import org.assertj.core.api.Assertions.assertThat
 import org.mockserver.model.{HttpRequest, HttpResponse}
 import uk.gov.hmrc.test.ui.models.InitResponse
-import uk.gov.hmrc.test.ui.pages.{DonePage, StartPage}
+import uk.gov.hmrc.test.ui.pages._
 import uk.gov.hmrc.test.ui.utils.MockServer
 
 class ServiceExampleSpec extends BaseSpec with MockServer {
@@ -30,6 +30,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
   Scenario("Example Acceptance Test for services that use BAVFE") {
     val initResponse: InitResponse = InitResponse()
+    val credID = "Some-Cred-ID"
     val continueUrl = s"${DonePage().url}/${initResponse.journeyId}"
     val expectedBAVFEResponse =
       s"""{
@@ -91,7 +92,12 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     Given("I want to collect and validate a companies bank account details for my service")
 
-    go to StartPage().url
+    go to EntryPage().url
+    EntryPage().viewExample()
+    AuthStubPage()
+      .enterCredID(credID)
+      .enterRedirectUrl(StartPage().url)
+      .submit()
 
     When("I invoke BAVFE by clicking on 'View an Example'")
 
