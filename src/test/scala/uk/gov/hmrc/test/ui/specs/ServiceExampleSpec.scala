@@ -74,8 +74,8 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
           sortCode = DEFAULT_BANK_SORT_CODE,
           accountNumber = DEFAULT_BANK_ACCOUNT_NUMBER,
           accountNumberWithSortCodeIsValid = Yes,
-          accountExists = Some(Inapplicable),
-          companyNameMatches = Some(Inapplicable),
+          accountExists = Some(Yes),
+          companyNameMatches = Some(Yes),
           companyPostCodeMatches = Some(Inapplicable),
           companyRegistrationNumberMatches = Some(Inapplicable),
           nonStandardAccountDetailsRequiredForBacs = Some(No),
@@ -121,8 +121,8 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     assertThat(DonePage().getSortCode).isEqualTo(DEFAULT_BANK_SORT_CODE)
     assertThat(DonePage().getAccountNumber).isEqualTo(DEFAULT_BANK_ACCOUNT_NUMBER)
     assertThat(DonePage().getValidationResult).isEqualTo("yes")
-    assertThat(DonePage().getAccountExists).isEqualTo("inapplicable")
-    assertThat(DonePage().getCompanyNameMatches).isEqualTo("inapplicable")
+    assertThat(DonePage().getAccountExists).isEqualTo("yes")
+    assertThat(DonePage().getCompanyNameMatches).isEqualTo("yes")
     assertThat(DonePage().getCompanyPostcodeMatches).isEqualTo("inapplicable")
   }
 
