@@ -2,22 +2,28 @@
 
 This is an example UI test suite for the Bank Account Verification Example Frontend using WebDriver and scalatest.
 
-This test suite shows our recommended way of testing a service that integrates with the Bank Account Verification Frontend (BAVFE); it uses service manager and mocks to enable you to bypass the BAVFE UI.
+This test suite shows our recommended way of testing a service that integrates with the Bank Account Verification Frontend (BAVFE); it uses service manager and mocks to enable you
+to bypass the BAVFE UI.
 
 The benefits of this are as follows:
+  
+- Your tests don't break when we change stuff. 
+- You have less test code because you don't need to create page objects and controls to drive our frontend.
+- Your tests will run much faster since you are skipping out the part of your journey that uses our frontend.
+- It's much easier to test different BAVFE response scenarios because you just set your expected response from BAVFE.  This is much easier than rather than creating lots of different scenarios that drive through BAVFE in different ways (which we will have covered in our tests anyway) to return different responses.
 
- - Your tests will be faster since you don’t have to navigate through the BAVFE UI
- - Any changes we make to the BAVFE UI will not affect your acceptance tests
- - It’s much easier to tailor the the exact response you want to get from BAVFE to exercise various flows in your UI
-
-## Running the tests
+# Running the acceptance tests
 
 Prior to executing the tests ensure you have:
- - Docker - If you want to run a browser (Chrome or Firefox) inside a container 
- - Appropriate [drivers installed](#installing-local-driver-binaries) - to run tests against locally installed Browser
- - Installed/configured [service manager](https://github.com/hmrc/service-manager).  
 
-Run the following command to start services locally:
+- Appropriate webdriver binaries installed to run tests against your locally installed Browser(s) - If you don't have these you can
+  use [docker containers instead](#running-specs-using-a-containerised-browser---on-a-developer-machine).
+- Docker - If you want to run a browser (Chrome or Firefox) inside a container, or a ZAP container
+- Installed/configured [service manager](https://github.com/hmrc/service-manager).
+
+## Start the local services
+
+To start services locally, run the following:
 
     sm --start BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE AUTH_LOGIN_API AUTH_LOGIN_STUB AUTH USER_DETAILS IDENTITY_VERIFICATION -r --appendArgs '{                                                                                                              
       "BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE": [
@@ -27,45 +33,52 @@ Run the following command to start services locally:
       ]
     }'
 
-_**Important Note:** We are using port 6001 for the mock server.  For the browser to be able to use the mock server for redirects on jenkins build jobs we need to use a port in the range 6001 - 6010._
+_**Important Note:** We are using port 6001 for the mock server. For the browser to be able to use the mock server for redirects on jenkins build jobs we need to use a port in the
+range 6001 - 6010._
 
-Then execute the `run-tests.sh` script:
-    
-    ./run-tests.sh <browser-driver>
+## Running specs
 
-The `run-tests.sh` script defaults to the locally installed `chrome` driver binary.  For a complete list of supported param values, see:
- - `src/test/resources/application.conf` for **environment** 
- - [webdriver-factory](https://github.com/hmrc/webdriver-factory#2-instantiating-a-browser-with-default-options) for **browser-driver**
+Execute the `run-specs.sh` script:
 
-## Running tests against a containerised browser - on a developer machine
+    ./run-specs.sh
 
-The script `./run-browser-with-docker.sh` can be used to start a Chrome or Firefox container on a developer machine. 
-The script requires `remote-chrome` or `remote-firefox` as an argument.
+The `run-specs.sh` script defaults to the locally installed `chrome` driver binary. For a complete list of supported param values, see:
 
-Read more about the script's functionality [here](run-local-browser-container.sh).
+- `src/test/resources/application.conf` for **environment**
+- [webdriver-factory](https://github.com/hmrc/webdriver-factory#2-instantiating-a-browser-with-default-options) for **browser-driver**
+
+## Running specs using a containerised browser - on a developer machine
+
+The script `./run-local-browser-container.sh` can be used to start a Chrome or Firefox container on a developer machine.
+
+Read more about the script's functionality [here](run-local-browser-container.sh), or invoke `./run-local-browser-container.sh -h`.
 
 To run against a containerised Chrome browser:
 
 ```bash
-./run-local-browser-container.sh remote-chrome 
-./run-specs.sh local remote-chrome
+./run-local-browser-container.sh --remote-chrome
+./run-specs.sh remote-chrome
 ```
 
-`./run-browser-with-docker.sh` is **NOT** required when running in a CI environment. 
+***Note:** `./run-local-browser-container.sh` should **NOT** be used when running in a CI environment!*
 
-## Installing local driver binaries
+## Running ZAP specs - on a developer machine
 
-This project supports UI test execution using Firefox (Geckodriver) and Chrome (Chromedriver) browsers. 
+You can use the `run-local-zap-container.sh` script to build a local ZAP container that will allow you to run ZAP tests locally.  
+This will clone a copy of the dast-config-manager repository in this projects parent directory; it will require `make` to be available on your machine.  
+https://github.com/hmrc/dast-config-manager/#running-zap-locally has more information about how the zap container is built.
 
-See the `drivers/` directory for some helpful scripts to do the installation work for you.  They should work on both Mac and Linux by running the following command:
+```bash
+./run-local-zap-container.sh --start
+./run-local-browser-container.sh --remote-chrome
+./run-local-zap-specs.sh
+./run-local-zap-container.sh --stop
+``` 
 
-    ./installGeckodriver.sh <operating-system> <driver-version>
-    or
-    ./installChromedriver <operating-system> <driver-version>
+***Note:** Results of your ZAP run will not be placed in your target directory until you have run `./run-local-zap-container.sh --stop`*
 
-- *<operating-system>* defaults to **linux64**, however it also supports **macos**
-- *<driver-version>* defaults to **0.21.0** for Gecko/Firefox, and the latest release for Chrome.  You can, however, however pass any version available at the [Geckodriver](https://github.com/mozilla/geckodriver/tags) or [Chromedriver](http://chromedriver.storage.googleapis.com/) repositories.
+***Note:** `./run-local-zap-container.sh` should **NOT** be used when running in a CI environment!*
 
-**Note 1:** *You will need to ensure that you have a recent version of Chrome and/or Firefox installed for the later versions of the drivers to work reliably.*
+## License
 
-**Note 2** *These scripts use sudo to set the right permissions on the drivers so you will likely be prompted to enter your password.*
+This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
