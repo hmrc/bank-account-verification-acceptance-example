@@ -42,13 +42,13 @@ The `run-tests.sh` script defaults to the locally installed `chrome` driver bina
 The script `./run-browser-with-docker.sh` can be used to start a Chrome or Firefox container on a developer machine. 
 The script requires `remote-chrome` or `remote-firefox` as an argument.
 
-Read more about the script's functionality [here](run-browser-with-docker.sh).
+Read more about the script's functionality [here](run-local-browser-container.sh).
 
 To run against a containerised Chrome browser:
 
 ```bash
-./run-browser-with-docker.sh remote-chrome 
-./run-tests.sh local remote-chrome
+./run-local-browser-container.sh remote-chrome 
+./run-specs.sh local remote-chrome
 ```
 
 `./run-browser-with-docker.sh` is **NOT** required when running in a CI environment. 
