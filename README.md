@@ -19,7 +19,7 @@ Prior to executing the tests ensure you have:
 
 Run the following command to start services locally:
 
-    sm --start BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE AUTH_LOGIN_API AUTH_LOGIN_STUB AUTH USER_DETAILS ASSETS_FRONTEND IDENTITY_VERIFICATION -r --appendArgs '{                                                                                                              
+    sm --start BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE AUTH_LOGIN_API AUTH_LOGIN_STUB AUTH USER_DETAILS IDENTITY_VERIFICATION -r --appendArgs '{                                                                                                              
       "BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE": [
         "-J-Dauditing.enabled=true",
         "-J-Dmicroservice.services.bank-account-verification-api.port=6001",

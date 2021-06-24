@@ -16,8 +16,12 @@
 
 package uk.gov.hmrc.test.ui.specs
 
+import bankaccountverification.api.{BusinessCompleteResponse, CompleteResponse, CompleteResponseAddress}
+import bankaccountverification.connector.ReputationResponseEnum._
+import bankaccountverification.web.AccountTypeRequestEnum
 import org.assertj.core.api.Assertions.assertThat
 import org.mockserver.model.{HttpRequest, HttpResponse}
+import play.api.libs.json.Json
 import uk.gov.hmrc.test.ui.models.InitResponse
 import uk.gov.hmrc.test.ui.pages._
 import uk.gov.hmrc.test.ui.utils.MockServer
@@ -28,32 +32,10 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
   val DEFAULT_BANK_SORT_CODE = "40 47 84"
   val DEFAULT_BANK_ACCOUNT_NUMBER = "70872490"
 
-  Scenario("Example Acceptance Test for services that use BAVFE") {
+  Scenario("Example acceptance test for services that use BAVFE to check company account details") {
     val initResponse: InitResponse = InitResponse()
     val credID = "Some-Cred-ID"
     val continueUrl = s"${DonePage().url}/${initResponse.journeyId}"
-    val expectedBAVFEResponse =
-      s"""{
-         |    "accountType": "business",
-         |    "business": {
-         |        "address": {
-         |            "lines": [
-         |                "Line 1",
-         |                "Line 2"
-         |            ],
-         |            "town": "Town",
-         |            "postcode": "Postcode"
-         |        },
-         |        "companyName": "$DEFAULT_COMPANY_NAME",
-         |        "sortCode": "$DEFAULT_BANK_SORT_CODE",
-         |        "accountNumber": "$DEFAULT_BANK_ACCOUNT_NUMBER",
-         |        "accountNumberWithSortCodeIsValid": "yes",
-         |        "accountExists": "inapplicable",
-         |        "companyNameMatches": "inapplicable",
-         |        "companyPostCodeMatches": "inapplicable",
-         |        "nonStandardAccountDetailsRequiredForBacs": "no"
-         |    }
-         |}""".stripMargin
 
     //Mock the init call that is made to BAVFE
     mockServer.when(
@@ -67,7 +49,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
         .withBody(initResponse.asJsonString())
     )
 
-    //Create a mock that will emulate the service passing over to BAVFE, and then handing back to the continue URL
+    //Create a mock that will emulate the handover from your service -> BAVFE, and then BAVFE -> your service
     mockServer.when(
       HttpRequest.request()
         .withMethod("GET")
@@ -78,7 +60,32 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
         .withStatusCode(303)
     )
 
-    //Mock the request that collects data from BAVFE that the service will then use to continue its journey
+    //Create your expected BAVFE response using the models defined in BAVFE
+    val expectedBAVFEResponse = Json.toJson(
+      CompleteResponse(
+        AccountTypeRequestEnum.Business,
+        business = Some(BusinessCompleteResponse(
+          address = Some(CompleteResponseAddress(
+            lines = List("Line 1", "Line 2"),
+            town = Some("Town"),
+            postcode = Some("Postcode"),
+          )),
+          companyName = DEFAULT_COMPANY_NAME,
+          sortCode = DEFAULT_BANK_SORT_CODE,
+          accountNumber = DEFAULT_BANK_ACCOUNT_NUMBER,
+          accountNumberWithSortCodeIsValid = Yes,
+          accountExists = Some(Inapplicable),
+          companyNameMatches = Some(Inapplicable),
+          companyPostCodeMatches = Some(Inapplicable),
+          companyRegistrationNumberMatches = Some(Inapplicable),
+          nonStandardAccountDetailsRequiredForBacs = Some(No),
+          sortCodeBankName = Some("Lloyds")
+        )),
+        personal = None
+      )
+    )
+
+    //Mock the request that collects the data that the user has entered in BAVFE using the above expected response
     mockServer.when(
       HttpRequest.request()
         .withMethod("GET")
@@ -86,11 +93,11 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     ).respond(
       HttpResponse.response()
         .withHeader("Content-Type", "application/json")
-        .withBody(expectedBAVFEResponse)
+        .withBody(expectedBAVFEResponse.toString())
         .withStatusCode(200)
     )
 
-    Given("I want to collect and validate a companies bank account details for my service")
+    Given("I want to collect and validate some company bank account details for my service")
 
     go to EntryPage().url
     EntryPage().viewExample()
