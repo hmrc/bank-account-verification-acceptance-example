@@ -95,4 +95,12 @@ case class DonePage() extends BasePage {
     getDataForSummaryListEntryCalled("Bank name").get.text
   }
 
+  def getDirectDebitSupported: String = {
+    getDataForSummaryListEntryCalled("Direct debit supported").get.text
+  }
+
+  def getDirectCreditSupported: String = {
+    getDataForSummaryListEntryCalled("Direct credit supported").get.text
+  }
+
 }

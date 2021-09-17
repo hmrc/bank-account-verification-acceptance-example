@@ -79,7 +79,9 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
           companyPostCodeMatches = Some(Inapplicable),
           companyRegistrationNumberMatches = Some(Inapplicable),
           nonStandardAccountDetailsRequiredForBacs = Some(No),
-          sortCodeBankName = Some("Lloyds")
+          sortCodeBankName = Some("Lloyds"),
+          sortCodeSupportsDirectDebit = Some(Yes),
+          sortCodeSupportsDirectCredit = Some(Yes)
         )),
         personal = None
       )
@@ -124,6 +126,9 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     assertThat(DonePage().getAccountExists).isEqualTo("yes")
     assertThat(DonePage().getCompanyNameMatches).isEqualTo("yes")
     assertThat(DonePage().getCompanyPostcodeMatches).isEqualTo("inapplicable")
+    assertThat(DonePage().getBankName).isEqualTo("Lloyds")
+    assertThat(DonePage().getDirectDebitSupported).isEqualTo("yes")
+    assertThat(DonePage().getDirectCreditSupported).isEqualTo("yes")
   }
 
 }
