@@ -21,7 +21,11 @@ import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
 case class DonePage() extends BasePage {
 
-  val url: String = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/done"
+  private lazy val url: String = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/done"
+
+  def getUrl(journeyId: String): String = {
+    s"$url/$journeyId"
+  }
 
   override def isOnPage: Boolean = {
     webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))

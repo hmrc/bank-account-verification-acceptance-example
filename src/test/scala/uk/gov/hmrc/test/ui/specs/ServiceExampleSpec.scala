@@ -35,7 +35,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
   Scenario("Example acceptance test for services that use BAVFE to check company account details") {
     val initResponse: InitResponse = InitResponse()
     val credID = "Some-Cred-ID"
-    val continueUrl = s"${DonePage().url}/${initResponse.journeyId}"
+    val journeyId = initResponse.journeyId
 
     //Mock the init call that is made to BAVFE
     mockServer.when(
@@ -56,7 +56,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
         .withPath(initResponse.startUrl)
     ).respond(
       HttpResponse.response()
-        .withHeader("Location", continueUrl)
+        .withHeader("Location", ExtraInformationPage().getUrl(journeyId))
         .withStatusCode(303)
     )
 
@@ -117,7 +117,15 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     Then("the BAVFE journey is bypassed and I am returned to my service with an expected BAVFE response")
 
-    assertThat(webDriver.getCurrentUrl).isEqualTo(continueUrl)
+    assertThat(webDriver.getCurrentUrl).isEqualTo(ExtraInformationPage().getUrl(journeyId))
+
+    ExtraInformationPage()
+      .clickContinue()
+
+    CheckYourAnswersPage()
+      .clickSubmit()
+
+    assertThat(webDriver.getCurrentUrl).isEqualTo(DonePage().getUrl(journeyId))
     assertThat(DonePage().getAccountType).isEqualTo("business")
     assertThat(DonePage().getCompanyName).isEqualTo(DEFAULT_COMPANY_NAME)
     assertThat(DonePage().getSortCode).isEqualTo(DEFAULT_BANK_SORT_CODE)
