@@ -21,7 +21,7 @@ import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
 case class DonePage() extends BasePage {
 
-  private lazy val url: String = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/done"
+  private lazy val url: String = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/postCheckYourDetails"
 
   def getUrl(journeyId: String): String = {
     s"$url/$journeyId"

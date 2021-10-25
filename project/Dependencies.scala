@@ -10,7 +10,7 @@ object Dependencies {
     "org.mock-server"       %   "mockserver-netty"                    % "5.11.2"      % Test,
     "org.assertj"           %   "assertj-core"                        % "3.20.2"      % Test,
     "uk.gov.hmrc"           %%  "bank-account-verification-frontend"  % "0.+"         % Test,
-    "com.google.guava"        % "guava"               % "30.1.1-jre"  %   Test
+    "com.google.guava"      % "guava"                                 % "30.1.1-jre"  % Test
   )
 
 }
