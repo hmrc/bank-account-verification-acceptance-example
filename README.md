@@ -29,7 +29,8 @@ To start services locally, run the following:
       "BANK_ACCOUNT_VERIFICATION_FRONTEND_EXAMPLE": [
         "-J-Dauditing.enabled=true",
         "-J-Dmicroservice.services.bank-account-verification-api.port=6001",
-        "-J-Dmicroservice.services.bank-account-verification-web.port=6001"
+        "-J-Dmicroservice.services.bank-account-verification-web.port=6001",
+        "-J-Dauditing.consumer.baseUri.port=6001"
       ]
     }'
 

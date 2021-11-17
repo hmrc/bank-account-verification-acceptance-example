@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.test.ui.specs
 
-import bankaccountverification.api.{BusinessCompleteResponse, CompleteResponse, CompleteResponseAddress}
+import bankaccountverification.api.{BusinessCompleteV2Response, CompleteV2Response}
 import bankaccountverification.connector.ReputationResponseEnum._
 import bankaccountverification.web.AccountTypeRequestEnum
 import org.assertj.core.api.Assertions.assertThat
@@ -41,7 +41,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     mockServer.when(
       HttpRequest.request()
         .withMethod("POST")
-        .withPath("/api/init")
+        .withPath("/api/v2/init")
     ).respond(
       HttpResponse.response()
         .withHeader("Content-Type", "application/json")
@@ -62,22 +62,15 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     //Create your expected BAVFE response using the models defined in BAVFE
     val expectedBAVFEResponse = Json.toJson(
-      CompleteResponse(
+      CompleteV2Response(
         AccountTypeRequestEnum.Business,
-        business = Some(BusinessCompleteResponse(
-          address = Some(CompleteResponseAddress(
-            lines = List("Line 1", "Line 2"),
-            town = Some("Town"),
-            postcode = Some("Postcode"),
-          )),
+        business = Some(BusinessCompleteV2Response(
           companyName = DEFAULT_COMPANY_NAME,
           sortCode = DEFAULT_BANK_SORT_CODE,
           accountNumber = DEFAULT_BANK_ACCOUNT_NUMBER,
-          accountNumberWithSortCodeIsValid = Yes,
+          accountNumberIsWellFormatted = Yes,
           accountExists = Some(Yes),
-          companyNameMatches = Some(Yes),
-          companyPostCodeMatches = Some(Inapplicable),
-          companyRegistrationNumberMatches = Some(Inapplicable),
+          nameMatches = Some(Yes),
           nonStandardAccountDetailsRequiredForBacs = Some(No),
           sortCodeBankName = Some("Lloyds"),
           sortCodeSupportsDirectDebit = Some(Yes),
@@ -133,7 +126,6 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     assertThat(DonePage().getValidationResult).isEqualTo("yes")
     assertThat(DonePage().getAccountExists).isEqualTo("yes")
     assertThat(DonePage().getCompanyNameMatches).isEqualTo("yes")
-    assertThat(DonePage().getCompanyPostcodeMatches).isEqualTo("inapplicable")
     assertThat(DonePage().getBankName).isEqualTo("Lloyds")
     assertThat(DonePage().getDirectDebitSupported).isEqualTo("yes")
     assertThat(DonePage().getDirectCreditSupported).isEqualTo("yes")
