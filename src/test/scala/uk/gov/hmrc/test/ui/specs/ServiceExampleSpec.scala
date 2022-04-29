@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.test.ui.specs
 
-import bankaccountverification.api.{BusinessCompleteV2Response, CompleteV2Response}
+import bankaccountverification.api.{BusinessCompleteV3Response, CompleteV3Response}
 import bankaccountverification.connector.ReputationResponseEnum._
 import bankaccountverification.web.AccountTypeRequestEnum
 import org.assertj.core.api.Assertions.assertThat
@@ -41,7 +41,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     mockServer.when(
       HttpRequest.request()
         .withMethod("POST")
-        .withPath("/api/v2/init")
+        .withPath("/api/v3/init")
     ).respond(
       HttpResponse.response()
         .withHeader("Content-Type", "application/json")
@@ -62,9 +62,9 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     //Create your expected BAVFE response using the models defined in BAVFE
     val expectedBAVFEResponse = Json.toJson(
-      CompleteV2Response(
+      CompleteV3Response(
         AccountTypeRequestEnum.Business,
-        business = Some(BusinessCompleteV2Response(
+        business = Some(BusinessCompleteV3Response(
           companyName = DEFAULT_COMPANY_NAME,
           sortCode = DEFAULT_BANK_SORT_CODE,
           accountNumber = DEFAULT_BANK_ACCOUNT_NUMBER,

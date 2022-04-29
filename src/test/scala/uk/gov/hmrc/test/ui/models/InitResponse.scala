@@ -28,7 +28,7 @@ object InitResponse {
 
 case class InitResponse(journeyId: String = generatedJourneyID,
                         startUrl: String = s"/bank-account-verification/start/$generatedJourneyID",
-                        completeUrl: String = s"/api/v2/complete/$generatedJourneyID",
+                        completeUrl: String = s"/api/v3/complete/$generatedJourneyID",
                         detailsUrl: Option[String] = None) {
 
   def asJsonString(): String = {
