@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ trait BaseSpec extends AnyFeatureSpec
   with BeforeAndAfterEach
   with Matchers {
 
-  override def beforeAll() {
+  override def beforeAll(): Unit = {
     super.beforeAll()
     sys.addShutdownHook {
       webDriver.quit()
@@ -42,7 +42,7 @@ trait BaseSpec extends AnyFeatureSpec
     webDriver.manage().deleteAllCookies()
   }
 
-  override def afterAll() {
+  override def afterAll(): Unit = {
     Try(SingletonDriver.closeInstance)
   }
 }

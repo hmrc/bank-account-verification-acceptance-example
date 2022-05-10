@@ -9,4 +9,4 @@ if [ -z "$BROWSER_TYPE" ]; then
     echo ""
 fi
 
-sbt -mem 8192 -Dbrowser=${BROWSER_TYPE:=$DEFAULT_BROWSER} -Denv=${ENV:=local} "testOnly uk.gov.hmrc.test.ui.specs.*"
+sbt -mem 8192 clean compile -Dbrowser=${BROWSER_TYPE:=$DEFAULT_BROWSER} -Denv=${ENV:=local} "testOnly uk.gov.hmrc.test.ui.specs.*"

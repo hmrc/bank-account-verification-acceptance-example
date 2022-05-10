@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ trait MockServer extends AnyFeatureSpec
   val mockServerPort: Int = TestConfiguration.mockServerPort()
   lazy val mockServer: ClientAndServer = ClientAndServer.startClientAndServer(mockServerPort)
 
-  override def beforeAll() {
+  override def beforeAll(): Unit = {
     super.beforeAll()
   }
 
@@ -58,7 +58,7 @@ trait MockServer extends AnyFeatureSpec
     mockServer.reset()
   }
 
-  override def afterAll() {
+  override def afterAll(): Unit = {
     mockServer.stop()
     super.afterAll()
   }
