@@ -28,69 +28,83 @@ import uk.gov.hmrc.test.ui.utils.MockServer
 
 class ServiceExampleSpec extends BaseSpec with MockServer {
 
-  val DEFAULT_COMPANY_NAME = "P@cking & $orting"
-  val DEFAULT_BANK_SORT_CODE = "40 47 84"
+  val DEFAULT_COMPANY_NAME        = "P@cking & $orting"
+  val DEFAULT_BANK_SORT_CODE      = "40 47 84"
   val DEFAULT_BANK_ACCOUNT_NUMBER = "70872490"
 
   Scenario("Example acceptance test for services that use BAVFE to check company account details") {
     val initResponse: InitResponse = InitResponse()
-    val credID = "Some-Cred-ID"
-    val journeyId = initResponse.journeyId
+    val credID                     = "Some-Cred-ID"
+    val journeyId                  = initResponse.journeyId
 
     //Mock the init call that is made to BAVFE
-    mockServer.when(
-      HttpRequest.request()
-        .withMethod("POST")
-        .withPath("/api/v3/init")
-    ).respond(
-      HttpResponse.response()
-        .withHeader("Content-Type", "application/json")
-        .withStatusCode(200)
-        .withBody(initResponse.asJsonString())
-    )
+    mockServer
+      .when(
+        HttpRequest
+          .request()
+          .withMethod("POST")
+          .withPath("/api/v3/init")
+      )
+      .respond(
+        HttpResponse
+          .response()
+          .withHeader("Content-Type", "application/json")
+          .withStatusCode(200)
+          .withBody(initResponse.asJsonString())
+      )
 
     //Create a mock that will emulate the handover from your service -> BAVFE, and then BAVFE -> your service
-    mockServer.when(
-      HttpRequest.request()
-        .withMethod("GET")
-        .withPath(initResponse.startUrl)
-    ).respond(
-      HttpResponse.response()
-        .withHeader("Location", ExtraInformationPage().getUrl(journeyId))
-        .withStatusCode(303)
-    )
+    mockServer
+      .when(
+        HttpRequest
+          .request()
+          .withMethod("GET")
+          .withPath(initResponse.startUrl)
+      )
+      .respond(
+        HttpResponse
+          .response()
+          .withHeader("Location", ExtraInformationPage().getUrl(journeyId))
+          .withStatusCode(303)
+      )
 
     //Create your expected BAVFE response using the models defined in BAVFE
     val expectedBAVFEResponse = Json.toJson(
       CompleteV3Response(
         AccountTypeRequestEnum.Business,
-        business = Some(BusinessCompleteV3Response(
-          companyName = DEFAULT_COMPANY_NAME,
-          sortCode = DEFAULT_BANK_SORT_CODE,
-          accountNumber = DEFAULT_BANK_ACCOUNT_NUMBER,
-          accountNumberIsWellFormatted = Yes,
-          accountExists = Some(Yes),
-          nameMatches = Some(Yes),
-          nonStandardAccountDetailsRequiredForBacs = Some(No),
-          sortCodeBankName = Some("Lloyds"),
-          sortCodeSupportsDirectDebit = Some(Yes),
-          sortCodeSupportsDirectCredit = Some(Yes)
-        )),
+        business = Some(
+          BusinessCompleteV3Response(
+            companyName = DEFAULT_COMPANY_NAME,
+            sortCode = DEFAULT_BANK_SORT_CODE,
+            accountNumber = DEFAULT_BANK_ACCOUNT_NUMBER,
+            accountNumberIsWellFormatted = Yes,
+            accountExists = Some(Yes),
+            nameMatches = Some(Yes),
+            nonStandardAccountDetailsRequiredForBacs = Some(No),
+            sortCodeBankName = Some("Lloyds"),
+            sortCodeSupportsDirectDebit = Some(Yes),
+            sortCodeSupportsDirectCredit = Some(Yes)
+          )
+        ),
         personal = None
       )
     )
 
     //Mock the request that collects the data that the user has entered in BAVFE using the above expected response
-    mockServer.when(
-      HttpRequest.request()
-        .withMethod("GET")
-        .withPath(initResponse.completeUrl)
-    ).respond(
-      HttpResponse.response()
-        .withHeader("Content-Type", "application/json")
-        .withBody(expectedBAVFEResponse.toString())
-        .withStatusCode(200)
-    )
+    mockServer
+      .when(
+        HttpRequest
+          .request()
+          .withMethod("GET")
+          .withPath(initResponse.completeUrl)
+      )
+      .respond(
+        HttpResponse
+          .response()
+          .withHeader("Content-Type", "application/json")
+          .withBody(expectedBAVFEResponse.toString())
+          .withStatusCode(200)
+      )
 
     Given("I want to collect and validate some company bank account details for my service")
 
@@ -103,7 +117,8 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     When("I invoke BAVFE by clicking on 'View an Example'")
 
-    StartPage().enterPetName("Bugs")
+    StartPage()
+      .enterPetName("Bugs")
       .selectBunny()
       .enterPetAge("4")
       .clickContinue()

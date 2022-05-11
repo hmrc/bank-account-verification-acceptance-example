@@ -21,90 +21,70 @@ import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
 case class DonePage() extends BasePage {
 
-  private lazy val url: String = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/postCheckYourDetails"
+  private lazy val url: String =
+    s"${TestConfiguration.url("bank-account-verification-frontend-example")}/postCheckYourDetails"
 
-  def getUrl(journeyId: String): String = {
+  def getUrl(journeyId: String): String =
     s"$url/$journeyId"
-  }
 
-  override def isOnPage: Boolean = {
+  override def isOnPage: Boolean =
     webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
-  }
 
-  private def getDataForSummaryListEntryCalled(entry: String): Option[Element] = {
+  private def getDataForSummaryListEntryCalled(entry: String): Option[Element] =
     xpath(s"//dt[normalize-space()='$entry']/following-sibling::dd").findElement
-  }
 
-  def getAccountType: String = {
+  def getAccountType: String =
     getDataForSummaryListEntryCalled("Account type").get.text
-  }
 
-  def getAccountName: String = {
+  def getAccountName: String =
     getDataForSummaryListEntryCalled("Name on the account").get.text
-  }
 
-  def getSortCode: String = {
+  def getSortCode: String =
     getDataForSummaryListEntryCalled("Sort code").get.text
-  }
 
-  def getAccountNumber: String = {
+  def getAccountNumber: String =
     getDataForSummaryListEntryCalled("Account number").get.text
-  }
 
-  def getAddress: String = {
+  def getAddress: String =
     getDataForSummaryListEntryCalled("Address").get.text
-  }
 
-  def getRollNumber: String = {
+  def getRollNumber: String =
     getDataForSummaryListEntryCalled("Roll number").get.text
-  }
 
-  def getValidationResult: String = {
+  def getValidationResult: String =
     getDataForSummaryListEntryCalled("Validation result").get.text
-  }
 
-  def getAccountExists: String = {
+  def getAccountExists: String =
     getDataForSummaryListEntryCalled("Account exists").get.text
-  }
 
-  def getAccountNameMatched: String = {
+  def getAccountNameMatched: String =
     getDataForSummaryListEntryCalled("Account name matched").get.text
-  }
 
-  def getAccountAddressMatched: String = {
+  def getAccountAddressMatched: String =
     getDataForSummaryListEntryCalled("Account address matched").get.text
-  }
 
-  def getAccountNonConsented: String = {
+  def getAccountNonConsented: String =
     getDataForSummaryListEntryCalled("Account non-consented").get.text
-  }
 
-  def getAccountOwnerDeceased: String = {
+  def getAccountOwnerDeceased: String =
     getDataForSummaryListEntryCalled("Account owner deceased").get.text
-  }
 
-  def getCompanyName: String = {
+  def getCompanyName: String =
     getDataForSummaryListEntryCalled("Company name").get.text
-  }
 
-  def getCompanyNameMatches: String = {
+  def getCompanyNameMatches: String =
     getDataForSummaryListEntryCalled("Company name matches").get.text
-  }
 
-  def getCompanyPostcodeMatches: String = {
+  def getCompanyPostcodeMatches: String =
     getDataForSummaryListEntryCalled("Company postcode matches").get.text
-  }
 
-  def getBankName: String = {
+  def getBankName: String =
     getDataForSummaryListEntryCalled("Bank name").get.text
-  }
 
-  def getDirectDebitSupported: String = {
+  def getDirectDebitSupported: String =
     getDataForSummaryListEntryCalled("Direct debit supported").get.text
-  }
 
-  def getDirectCreditSupported: String = {
+  def getDirectCreditSupported: String =
     getDataForSummaryListEntryCalled("Direct credit supported").get.text
-  }
 
 }

@@ -24,12 +24,13 @@ import uk.gov.hmrc.webdriver.SingletonDriver
 
 import scala.util.Try
 
-trait BaseSpec extends AnyFeatureSpec
-  with GivenWhenThen
-  with BrowserDriver
-  with BeforeAndAfterAll
-  with BeforeAndAfterEach
-  with Matchers {
+trait BaseSpec
+    extends AnyFeatureSpec
+    with GivenWhenThen
+    with BrowserDriver
+    with BeforeAndAfterAll
+    with BeforeAndAfterEach
+    with Matchers {
 
   override def beforeAll(): Unit = {
     super.beforeAll()
@@ -38,11 +39,9 @@ trait BaseSpec extends AnyFeatureSpec
     }
   }
 
-  override def afterEach: Unit = {
+  override def afterEach: Unit =
     webDriver.manage().deleteAllCookies()
-  }
 
-  override def afterAll(): Unit = {
+  override def afterAll(): Unit =
     Try(SingletonDriver.closeInstance)
-  }
 }

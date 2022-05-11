@@ -23,40 +23,43 @@ import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
-trait MockServer extends AnyFeatureSpec
-  with BeforeAndAfterAll
-  with BeforeAndAfterEach
-  with Eventually {
+trait MockServer extends AnyFeatureSpec with BeforeAndAfterAll with BeforeAndAfterEach with Eventually {
 
-  val mockServerPort: Int = TestConfiguration.mockServerPort()
+  val mockServerPort: Int              = TestConfiguration.mockServerPort()
   lazy val mockServer: ClientAndServer = ClientAndServer.startClientAndServer(mockServerPort)
 
-  override def beforeAll(): Unit = {
+  override def beforeAll(): Unit =
     super.beforeAll()
-  }
 
   override def beforeEach: Unit = {
-    mockServer.when(
-      HttpRequest.request()
-        .withMethod("POST")
-        .withPath("/write/audit")
-    ).respond(
-      HttpResponse.response()
-        .withStatusCode(200)
-    )
-    mockServer.when(
-      HttpRequest.request()
-        .withMethod("POST")
-        .withPath("/write/audit/merged")
-    ).respond(
-      HttpResponse.response()
-        .withStatusCode(200)
-    )
+    mockServer
+      .when(
+        HttpRequest
+          .request()
+          .withMethod("POST")
+          .withPath("/write/audit")
+      )
+      .respond(
+        HttpResponse
+          .response()
+          .withStatusCode(200)
+      )
+    mockServer
+      .when(
+        HttpRequest
+          .request()
+          .withMethod("POST")
+          .withPath("/write/audit/merged")
+      )
+      .respond(
+        HttpResponse
+          .response()
+          .withStatusCode(200)
+      )
   }
 
-  override def afterEach: Unit = {
+  override def afterEach: Unit =
     mockServer.reset()
-  }
 
   override def afterAll(): Unit = {
     mockServer.stop()

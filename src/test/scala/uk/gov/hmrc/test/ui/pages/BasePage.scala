@@ -24,8 +24,7 @@ trait BasePage extends BrowserDriver {
 
   def isOnPage: Boolean = false
 
-  def getPageHeading: String = {
+  def getPageHeading: String =
     pageHeading.get.text
-  }
 
 }

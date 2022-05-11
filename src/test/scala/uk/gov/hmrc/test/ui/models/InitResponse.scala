@@ -22,16 +22,17 @@ import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.test.ui.models.InitResponse.generatedJourneyID
 
 object InitResponse {
-  val generatedJourneyID: String = UUID.randomUUID().toString
+  val generatedJourneyID: String                 = UUID.randomUUID().toString
   implicit val jsonFormat: OFormat[InitResponse] = Json.format[InitResponse]
 }
 
-case class InitResponse(journeyId: String = generatedJourneyID,
-                        startUrl: String = s"/bank-account-verification/start/$generatedJourneyID",
-                        completeUrl: String = s"/api/v3/complete/$generatedJourneyID",
-                        detailsUrl: Option[String] = None) {
+case class InitResponse(
+  journeyId: String = generatedJourneyID,
+  startUrl: String = s"/bank-account-verification/start/$generatedJourneyID",
+  completeUrl: String = s"/api/v3/complete/$generatedJourneyID",
+  detailsUrl: Option[String] = None
+) {
 
-  def asJsonString(): String = {
+  def asJsonString(): String =
     Json.toJson(this).toString()
-  }
 }

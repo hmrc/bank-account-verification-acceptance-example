@@ -24,11 +24,9 @@ case class EntryPage() extends BasePage {
 
   private lazy val viewExampleButton = id("start")
 
-  def viewExample(): Unit = {
+  def viewExample(): Unit =
     click on viewExampleButton
-  }
 
-  override def isOnPage: Boolean = {
+  override def isOnPage: Boolean =
     webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
-  }
 }

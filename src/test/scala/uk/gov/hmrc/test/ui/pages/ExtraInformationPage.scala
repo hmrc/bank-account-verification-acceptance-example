@@ -22,17 +22,14 @@ import uk.gov.hmrc.test.ui.conf.TestConfiguration
 case class ExtraInformationPage() extends BasePage {
 
   private lazy val continueButton: NameQuery = name("continue")
-  private lazy val url: String = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/moreDetails"
+  private lazy val url: String               = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/moreDetails"
 
-  def getUrl(journeyId: String): String = {
+  def getUrl(journeyId: String): String =
     s"$url/$journeyId"
-  }
 
-  def clickContinue(): Unit = {
+  def clickContinue(): Unit =
     click on continueButton
-  }
 
-  override def isOnPage: Boolean = {
+  override def isOnPage: Boolean =
     webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
-  }
 }
