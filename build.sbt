@@ -6,6 +6,7 @@ lazy val testSuite = (project in file("."))
     name := "bank-account-verification-acceptance-example",
     version := "0.1.0",
     scalaVersion := "2.12.15",
+    console / initialCommands := "import uk.gov.hmrc._",
     libraryDependencies ++= Dependencies.test,
     Test / parallelExecution := false,
     Test / testOptions := Seq(
