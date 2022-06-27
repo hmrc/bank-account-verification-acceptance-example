@@ -9,7 +9,7 @@ object Dependencies {
     "uk.gov.hmrc"         %% "webdriver-factory"                  % "0.+"      % Test,
     "com.squareup.okhttp3" % "okhttp"                             % "4.10.0"   % Test,
     "org.mock-server"      % "mockserver-netty"                   % "5.12.0"   % Test,
-    "org.assertj"          % "assertj-core"                       % "3.22.0"   % Test,
+    "org.assertj"          % "assertj-core"                       % "3.23.1"   % Test,
     "uk.gov.hmrc"         %% "bank-account-verification-frontend" % "0.+"      % Test,
     "com.google.guava"     % "guava"                              % "31.1-jre" % Test
   )

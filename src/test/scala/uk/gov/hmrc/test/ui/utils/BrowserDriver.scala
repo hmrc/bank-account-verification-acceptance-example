@@ -32,6 +32,6 @@ trait BrowserDriver extends WebBrowser with LazyLogging {
 
   var options: Option[MutableCapabilities]  = None
   implicit lazy val webDriver: WebDriver    = SingletonDriver.getInstance(options)
-  lazy val webDriverWillWait: WebDriverWait = new WebDriverWait(WebDriver, Duration.ofSeconds(5), Duration.ofMillis(250))
+  lazy val webDriverWillWait: WebDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(5), Duration.ofMillis(250))
   lazy val action: Actions                  = new Actions(webDriver)
 }
