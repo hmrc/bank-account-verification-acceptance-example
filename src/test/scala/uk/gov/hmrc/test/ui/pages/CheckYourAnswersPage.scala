@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.test.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
 
-case class CheckYourAnswersPage() extends BasePage {
+case class CheckYourAnswersPage()(implicit override val driver: WebDriver) extends BasePage {
+
+  lazy val url: String = ???
 
   private lazy val continueButton: IdQuery = id("continue")
 
   def clickSubmit(): Unit =
     click on continueButton
 
-  override def isOnPage: Boolean =
-    webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
 }

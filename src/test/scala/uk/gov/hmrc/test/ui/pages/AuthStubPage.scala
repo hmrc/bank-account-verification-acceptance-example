@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,12 @@
 
 package uk.gov.hmrc.test.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
+import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
-case class AuthStubPage() extends BasePage {
+case class AuthStubPage()(implicit override val driver: WebDriver) extends BasePage {
+
+  lazy val url: String = TestConfiguration.url("bank-account-verification-frontend-example")
 
   private lazy val credentialsIdentifierField: TextField = textField(id("authorityId"))
   private lazy val RedirectUrlField: TextField           = textField(id("redirectionUrl"))
@@ -37,6 +40,4 @@ case class AuthStubPage() extends BasePage {
   def submit(): Unit =
     click on submitField
 
-  override def isOnPage: Boolean =
-    webDriverWillWait.until(titleIs("Authority Wizard"))
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.test.ui.pages
 
-import uk.gov.hmrc.test.ui.utils.BrowserDriver
+import org.openqa.selenium.WebDriver
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.selenium.{Page, WebBrowser}
 
-trait BasePage extends BrowserDriver {
+trait BasePage extends Page with Matchers with WebBrowser {
+  implicit val driver: WebDriver
 
   private lazy val pageHeading: Option[Element] = find(id("pageHeading"))
 
-  def isOnPage: Boolean = false
-
   def getPageHeading: String =
     pageHeading.get.text
-
 }

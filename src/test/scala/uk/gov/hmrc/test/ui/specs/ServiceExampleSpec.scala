@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package uk.gov.hmrc.test.ui.specs
 import bankaccountverification.api.{BusinessCompleteV3Response, CompleteV3Response}
 import bankaccountverification.connector.ReputationResponseEnum._
 import bankaccountverification.web.AccountTypeRequestEnum
-import org.assertj.core.api.Assertions.assertThat
 import org.mockserver.model.{HttpRequest, HttpResponse}
 import play.api.libs.json.Json
 import uk.gov.hmrc.test.ui.models.InitResponse
@@ -108,7 +107,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     Given("I want to collect and validate some company bank account details for my service")
 
-    go to EntryPage().url
+    go to EntryPage()
     EntryPage().viewExample()
     AuthStubPage()
       .enterCredID(credID)
@@ -125,7 +124,7 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
 
     Then("the BAVFE journey is bypassed and I am returned to my service with an expected BAVFE response")
 
-    assertThat(webDriver.getCurrentUrl).isEqualTo(ExtraInformationPage().getUrl(journeyId))
+    driver.getCurrentUrl shouldBe ExtraInformationPage().getUrl(journeyId)
 
     ExtraInformationPage()
       .clickContinue()
@@ -133,17 +132,17 @@ class ServiceExampleSpec extends BaseSpec with MockServer {
     CheckYourAnswersPage()
       .clickSubmit()
 
-    assertThat(webDriver.getCurrentUrl).isEqualTo(DonePage().getUrl(journeyId))
-    assertThat(DonePage().getAccountType).isEqualTo("business")
-    assertThat(DonePage().getCompanyName).isEqualTo(DEFAULT_COMPANY_NAME)
-    assertThat(DonePage().getSortCode).isEqualTo(DEFAULT_BANK_SORT_CODE)
-    assertThat(DonePage().getAccountNumber).isEqualTo(DEFAULT_BANK_ACCOUNT_NUMBER)
-    assertThat(DonePage().getValidationResult).isEqualTo("yes")
-    assertThat(DonePage().getAccountExists).isEqualTo("yes")
-    assertThat(DonePage().getCompanyNameMatches).isEqualTo("yes")
-    assertThat(DonePage().getBankName).isEqualTo("Lloyds")
-    assertThat(DonePage().getDirectDebitSupported).isEqualTo("yes")
-    assertThat(DonePage().getDirectCreditSupported).isEqualTo("yes")
+    driver.getCurrentUrl                shouldBe DonePage().getUrl(journeyId)
+    DonePage().getAccountType           shouldBe "business"
+    DonePage().getCompanyName           shouldBe DEFAULT_COMPANY_NAME
+    DonePage().getSortCode              shouldBe DEFAULT_BANK_SORT_CODE
+    DonePage().getAccountNumber         shouldBe DEFAULT_BANK_ACCOUNT_NUMBER
+    DonePage().getValidationResult      shouldBe "yes"
+    DonePage().getAccountExists         shouldBe "yes"
+    DonePage().getCompanyNameMatches    shouldBe "yes"
+    DonePage().getBankName              shouldBe "Lloyds"
+    DonePage().getDirectDebitSupported  shouldBe "yes"
+    DonePage().getDirectCreditSupported shouldBe "yes"
   }
 
 }

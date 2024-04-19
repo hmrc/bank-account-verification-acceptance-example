@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ trait MockServer extends AnyFeatureSpec with BeforeAndAfterAll with BeforeAndAft
   override def beforeAll(): Unit =
     super.beforeAll()
 
-  override def beforeEach: Unit = {
+  override def beforeEach(): Unit = {
     mockServer
       .when(
         HttpRequest
@@ -58,7 +58,7 @@ trait MockServer extends AnyFeatureSpec with BeforeAndAfterAll with BeforeAndAft
       )
   }
 
-  override def afterEach: Unit =
+  override def afterEach(): Unit =
     mockServer.reset()
 
   override def afterAll(): Unit = {

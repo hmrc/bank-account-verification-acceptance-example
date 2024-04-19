@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,14 @@
 
 package uk.gov.hmrc.test.ui.utils
 
-import com.typesafe.scalalogging.LazyLogging
-import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.WebDriverWait
-import org.openqa.selenium.{MutableCapabilities, WebDriver}
-import org.scalatestplus.selenium.WebBrowser
-import uk.gov.hmrc.webdriver.SingletonDriver
+import uk.gov.hmrc.selenium.webdriver.Driver
 
 import java.time.Duration
 
-trait BrowserDriver extends WebBrowser with LazyLogging {
-  logger.info(
-    s"Instantiating Browser: ${sys.props.getOrElse("browser", "'browser' System property not set. This is required")}"
-  )
+trait BrowserDriver {
 
-  var options: Option[MutableCapabilities]  = None
-  implicit lazy val webDriver: WebDriver    = SingletonDriver.getInstance(options)
-  lazy val webDriverWillWait: WebDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(5), Duration.ofMillis(250))
-  lazy val action: Actions                  = new Actions(webDriver)
+  implicit def driver: WebDriver            = Driver.instance
+  lazy val webDriverWillWait: WebDriverWait = new WebDriverWait(driver, Duration.ofSeconds(5), Duration.ofMillis(250))
 }
