@@ -17,31 +17,36 @@
 package uk.gov.hmrc.test.ui.specs
 
 import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.matchers.must.Matchers
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, GivenWhenThen}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, GivenWhenThen, Outcome}
+import org.scalatestplus.selenium.WebBrowser
+import uk.gov.hmrc.selenium.webdriver.Browser
 import uk.gov.hmrc.test.ui.utils.BrowserDriver
-import uk.gov.hmrc.webdriver.SingletonDriver
-
-import scala.util.Try
 
 trait BaseSpec
     extends AnyFeatureSpec
     with GivenWhenThen
-    with BrowserDriver
     with BeforeAndAfterAll
-    with BeforeAndAfterEach
-    with Matchers {
+    with Matchers
+    with Browser
+    with WebBrowser
+    with BrowserDriver {
 
-  override def beforeAll(): Unit = {
-    super.beforeAll()
-    sys.addShutdownHook {
-      webDriver.quit()
-    }
-  }
-
-  override def afterEach: Unit =
-    webDriver.manage().deleteAllCookies()
+  override def beforeAll(): Unit =
+    startBrowser()
 
   override def afterAll(): Unit =
-    Try(SingletonDriver.closeInstance)
+    quitBrowser()
+
+  override def withFixture(test: NoArgTest): Outcome = {
+    val fixture = super.withFixture(test)
+    if (!fixture.isSucceeded) {
+      val screenshotName = test.name.replaceAll(" ", "_").replaceAll(":", "") + ".png"
+      setCaptureDir("./target/test-reports/html-report/screenshots/")
+      capture to screenshotName
+      markup(s"<img src='screenshots/$screenshotName' />")
+    }
+    fixture
+  }
+
 }

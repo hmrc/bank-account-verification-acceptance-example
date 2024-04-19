@@ -16,19 +16,16 @@
 
 package uk.gov.hmrc.test.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
 import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
-case class DonePage() extends BasePage {
+case class DonePage()(implicit override val driver: WebDriver) extends BasePage {
 
-  private lazy val url: String =
+  lazy val url: String =
     s"${TestConfiguration.url("bank-account-verification-frontend-example")}/postCheckYourDetails"
 
   def getUrl(journeyId: String): String =
     s"$url/$journeyId"
-
-  override def isOnPage: Boolean =
-    webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
 
   private def getDataForSummaryListEntryCalled(entry: String): Option[Element] =
     xpath(s"//dt[normalize-space()='$entry']/following-sibling::dd").findElement

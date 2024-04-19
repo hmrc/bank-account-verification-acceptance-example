@@ -31,7 +31,7 @@ trait MockServer extends AnyFeatureSpec with BeforeAndAfterAll with BeforeAndAft
   override def beforeAll(): Unit =
     super.beforeAll()
 
-  override def beforeEach: Unit = {
+  override def beforeEach(): Unit = {
     mockServer
       .when(
         HttpRequest
@@ -58,7 +58,7 @@ trait MockServer extends AnyFeatureSpec with BeforeAndAfterAll with BeforeAndAft
       )
   }
 
-  override def afterEach: Unit =
+  override def afterEach(): Unit =
     mockServer.reset()
 
   override def afterAll(): Unit = {

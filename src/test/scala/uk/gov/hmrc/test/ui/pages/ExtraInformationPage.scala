@@ -16,20 +16,17 @@
 
 package uk.gov.hmrc.test.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
 import uk.gov.hmrc.test.ui.conf.TestConfiguration
 
-case class ExtraInformationPage() extends BasePage {
+case class ExtraInformationPage()(implicit override val driver: WebDriver) extends BasePage {
 
   private lazy val continueButton: NameQuery = name("continue")
-  private lazy val url: String               = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/moreDetails"
+  lazy val url: String                       = s"${TestConfiguration.url("bank-account-verification-frontend-example")}/moreDetails"
 
   def getUrl(journeyId: String): String =
     s"$url/$journeyId"
 
   def clickContinue(): Unit =
     click on continueButton
-
-  override def isOnPage: Boolean =
-    webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
 }

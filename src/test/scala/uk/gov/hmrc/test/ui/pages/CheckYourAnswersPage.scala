@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.test.ui.pages
 
-import org.openqa.selenium.support.ui.ExpectedConditions.titleIs
+import org.openqa.selenium.WebDriver
 
-case class CheckYourAnswersPage() extends BasePage {
+case class CheckYourAnswersPage()(implicit override val driver: WebDriver) extends BasePage {
+
+  lazy val url: String = ???
 
   private lazy val continueButton: IdQuery = id("continue")
 
   def clickSubmit(): Unit =
     click on continueButton
 
-  override def isOnPage: Boolean =
-    webDriverWillWait.until(titleIs("bank-account-verification-example-frontend"))
 }

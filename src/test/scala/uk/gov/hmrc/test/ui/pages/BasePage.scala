@@ -16,15 +16,15 @@
 
 package uk.gov.hmrc.test.ui.pages
 
-import uk.gov.hmrc.test.ui.utils.BrowserDriver
+import org.openqa.selenium.WebDriver
+import org.scalatest.matchers.should.Matchers
+import org.scalatestplus.selenium.{Page, WebBrowser}
 
-trait BasePage extends BrowserDriver {
+trait BasePage extends Page with Matchers with WebBrowser {
+  implicit val driver: WebDriver
 
   private lazy val pageHeading: Option[Element] = find(id("pageHeading"))
 
-  def isOnPage: Boolean = false
-
   def getPageHeading: String =
     pageHeading.get.text
-
 }
